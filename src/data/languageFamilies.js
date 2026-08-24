@@ -45,7 +45,6 @@ export const languages = [
   { code: 'gu', name: 'Gujarati', nativeName: 'ગુજરાતી', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Gujarati', rtl: false, romanize: true },
   { code: 'pa', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Gurmukhi', rtl: false, romanize: true },
   { code: 'ur', name: 'Urdu', nativeName: 'اردو', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Arabic', rtl: true, romanize: true },
-  { code: 'ne', name: 'Nepali', nativeName: 'नेपाली', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Devanagari', rtl: false, romanize: true },
   { code: 'ps', name: 'Pashto', nativeName: 'پښتو', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Arabic', rtl: true, romanize: true },
   { code: 'ku', name: 'Kurdish', nativeName: 'Kurdî', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Arabic', rtl: true, romanize: true },
 

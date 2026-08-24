@@ -87,6 +87,16 @@ export async function translateWord(source, target, text) {
 
     const translated = data.responseData?.translatedText
     if (!translated || translated === '') {
+      // Fallback: check matches array for a valid translation
+      // MyMemory sometimes returns empty translatedText but has valid matches
+      const matches = data.matches || []
+      const fallback = matches.find(
+        (m) => m.translation && m.translation.trim() !== '' && !m.translation.includes('MYMEMORY WARNING'),
+      )
+      if (fallback) {
+        setCachedTranslation(source, target, text, fallback.translation)
+        return { translated: fallback.translation, cached: false }
+      }
       return { error: 'no_translation' }
     }
 
