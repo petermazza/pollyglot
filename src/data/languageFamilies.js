@@ -53,7 +53,6 @@ export const languages = [
   { code: 'ga', name: 'Irish', nativeName: 'Gaeilge', family: 'Indo-European', subfamily: 'Celtic', script: 'Latin', rtl: false, romanize: false },
   { code: 'gd', name: 'Scots Gaelic', nativeName: 'Gàidhlig', family: 'Indo-European', subfamily: 'Celtic', script: 'Latin', rtl: false, romanize: false },
   { code: 'cy', name: 'Welsh', nativeName: 'Cymraeg', family: 'Indo-European', subfamily: 'Celtic', script: 'Latin', rtl: false, romanize: false },
-  { code: 'gv', name: 'Manx', nativeName: 'Gaelg', family: 'Indo-European', subfamily: 'Celtic', script: 'Latin', rtl: false, romanize: false },
 
   // Indo-European — Hellenic
   { code: 'el', name: 'Greek', nativeName: 'Ελληνικά', family: 'Indo-European', subfamily: 'Hellenic', script: 'Greek', rtl: false, romanize: true },
@@ -166,7 +165,6 @@ export const languages = [
   { code: 'sn', name: 'Shona', nativeName: 'ChiShona', family: 'Niger-Congo', subfamily: 'Bantu', script: 'Latin', rtl: false, romanize: false },
   { code: 'ny', name: 'Nyanja', nativeName: 'Chichewa', family: 'Niger-Congo', subfamily: 'Bantu', script: 'Latin', rtl: false, romanize: false },
   { code: 'zu', name: 'Zulu', nativeName: 'isiZulu', family: 'Niger-Congo', subfamily: 'Bantu', script: 'Latin', rtl: false, romanize: false },
-  { code: 'xh', name: 'Xhosa', nativeName: 'isiXhosa', family: 'Niger-Congo', subfamily: 'Bantu', script: 'Latin', rtl: false, romanize: false },
 
   // ═══════════════════════════════════════════════
   // Kartvelian

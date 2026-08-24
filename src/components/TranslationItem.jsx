@@ -59,7 +59,7 @@ export default function TranslationItem({ lang, result, onRetry }) {
         <div className="flex items-center gap-2 text-sm text-destructive">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span className="flex-1">
-            {result.error === 'rate_limited' ? 'Rate limited' : result.error === 'unsupported_pair' ? 'Not supported' : 'Failed'}
+            {result.error === 'rate_limited' ? 'Rate limited' : result.error === 'unsupported_pair' || result.error === 'no_translation' ? 'Not supported' : 'Failed'}
           </span>
           <button
             onClick={onRetry}
