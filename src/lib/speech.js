@@ -3,6 +3,39 @@
 
 let voices = []
 
+// Map our language codes to likely browser voice lang prefixes
+const VOICE_CODE_MAP = {
+  zh: 'zh',
+  nb: 'no',
+  tl: 'tl',
+  ms: 'ms',
+  fa: 'fa',
+  ku: 'ku',
+  ps: 'ps',
+  ur: 'ur',
+  az: 'az',
+  kk: 'kk',
+  uz: 'uz',
+  hy: 'hy',
+  ka: 'ka',
+  my: 'my',
+  bo: 'bo',
+  km: 'km',
+  lo: 'lo',
+  th: 'th',
+  bn: 'bn',
+  gu: 'gu',
+  pa: 'pa',
+  ta: 'ta',
+  te: 'te',
+  kn: 'kn',
+  yi: 'yi',
+}
+
+function getVoicePrefix(code) {
+  return VOICE_CODE_MAP[code] || code
+}
+
 function loadVoices() {
   voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []
 }
@@ -15,7 +48,8 @@ if (typeof window !== 'undefined' && window.speechSynthesis) {
 export function hasVoice(langCode) {
   if (!window.speechSynthesis) return false
   if (voices.length === 0) loadVoices()
-  return voices.some((v) => v.lang.toLowerCase().startsWith(langCode.toLowerCase()))
+  const prefix = getVoicePrefix(langCode).toLowerCase()
+  return voices.some((v) => v.lang.toLowerCase().startsWith(prefix))
 }
 
 export function speak(text, langCode) {
@@ -26,15 +60,21 @@ export function speak(text, langCode) {
 
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = langCode
+  utterance.rate = 0.9 // slightly slower for clarity
 
   // Try to find a matching voice
   if (voices.length === 0) loadVoices()
-  const voice = voices.find((v) => v.lang.toLowerCase().startsWith(langCode.toLowerCase()))
+  const prefix = getVoicePrefix(langCode).toLowerCase()
+  const voice = voices.find((v) => v.lang.toLowerCase().startsWith(prefix))
   if (voice) {
     utterance.voice = voice
   }
 
   window.speechSynthesis.speak(utterance)
+}
+
+export function stopSpeaking() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel()
 }
 
 export function isSpeechSupported() {

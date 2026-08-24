@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Volume2, Copy, Check, RotateCw, AlertCircle } from 'lucide-react'
+import { Volume2, VolumeX, Copy, Check, RotateCw, AlertCircle } from 'lucide-react'
 import { romanize } from '../lib/romanize'
-import { speak, hasVoice, isSpeechSupported } from '../lib/speech'
+import { speak, stopSpeaking, hasVoice, isSpeechSupported } from '../lib/speech'
 import { cn } from '../lib/utils'
 
 export default function TranslationItem({ lang, result, onRetry }) {
   const [copied, setCopied] = useState(false)
   const [voiceAvailable, setVoiceAvailable] = useState(false)
+  const [isSpeaking, setIsSpeaking] = useState(false)
 
   useEffect(() => {
     // Check voice availability (voices may load async)
@@ -17,6 +18,13 @@ export default function TranslationItem({ lang, result, onRetry }) {
       return () => clearTimeout(timer)
     }
   }, [lang.code])
+
+  // Stop speaking if component unmounts
+  useEffect(() => {
+    return () => {
+      if (isSpeaking) stopSpeaking()
+    }
+  }, [isSpeaking])
 
   const handleCopy = async () => {
     if (result.state !== 'done' || result.isSource) return
@@ -31,7 +39,16 @@ export default function TranslationItem({ lang, result, onRetry }) {
 
   const handleSpeak = () => {
     if (result.state !== 'done' || result.isSource) return
+    if (isSpeaking) {
+      stopSpeaking()
+      setIsSpeaking(false)
+      return
+    }
+    setIsSpeaking(true)
     speak(result.translated, lang.code)
+    // Reset speaking state after a delay based on text length
+    const duration = Math.max(1500, result.translated.length * 120)
+    setTimeout(() => setIsSpeaking(false), duration)
   }
 
   // Loading skeleton
@@ -104,16 +121,31 @@ export default function TranslationItem({ lang, result, onRetry }) {
 
       {/* Actions */}
       {!result.isSource && (
-        <div className="flex items-center gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            onClick={handleSpeak}
-            disabled={!voiceAvailable}
-            title={voiceAvailable ? 'Play pronunciation' : 'No voice available'}
-            className="flex items-center gap-1 text-xs px-2 py-1 rounded text-muted-foreground hover:text-primary hover:bg-accent disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-          >
-            <Volume2 className="w-3.5 h-3.5" />
-            Audio
-          </button>
+        <div className="flex items-center gap-1 mt-2">
+          {isSpeechSupported() && (
+            <button
+              onClick={handleSpeak}
+              title={voiceAvailable ? 'Play pronunciation' : 'Play (using default voice)'}
+              className={cn(
+                'flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors',
+                isSpeaking
+                  ? 'text-primary bg-accent'
+                  : 'text-muted-foreground hover:text-primary hover:bg-accent',
+              )}
+            >
+              {isSpeaking ? (
+                <>
+                  <VolumeX className="w-3.5 h-3.5 animate-pulse" />
+                  Stop
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-3.5 h-3.5" />
+                  Audio
+                </>
+              )}
+            </button>
+          )}
           <button
             onClick={handleCopy}
             title="Copy translation"
