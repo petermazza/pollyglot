@@ -52,8 +52,8 @@ export function hasVoice(langCode) {
   return voices.some((v) => v.lang.toLowerCase().startsWith(prefix))
 }
 
-export function speak(text, langCode) {
-  if (!window.speechSynthesis) return
+export function speak(text, langCode, onEnd) {
+  if (!window.speechSynthesis) return null
 
   // Cancel any ongoing speech
   window.speechSynthesis.cancel()
@@ -61,6 +61,10 @@ export function speak(text, langCode) {
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = langCode
   utterance.rate = 0.9 // slightly slower for clarity
+  if (onEnd) {
+    utterance.onend = onEnd
+    utterance.onerror = onEnd
+  }
 
   // Try to find a matching voice
   if (voices.length === 0) loadVoices()
@@ -71,6 +75,7 @@ export function speak(text, langCode) {
   }
 
   window.speechSynthesis.speak(utterance)
+  return utterance
 }
 
 export function stopSpeaking() {

@@ -23,7 +23,7 @@ export const languages = [
   { code: 'da', name: 'Danish', nativeName: 'Dansk', family: 'Indo-European', subfamily: 'Germanic', script: 'Latin', rtl: false, romanize: false },
   { code: 'sv', name: 'Swedish', nativeName: 'Svenska', family: 'Indo-European', subfamily: 'Germanic', script: 'Latin', rtl: false, romanize: false },
   { code: 'nb', name: 'Norwegian', nativeName: 'Norsk', family: 'Indo-European', subfamily: 'Germanic', script: 'Latin', rtl: false, romanize: false },
-  { code: 'yi', name: 'Yiddish', nativeName: 'ייִדיש', family: 'Indo-European', subfamily: 'Germanic', script: 'Arabic', rtl: true, romanize: true },
+  { code: 'yi', name: 'Yiddish', nativeName: 'ייִדיש', family: 'Indo-European', subfamily: 'Germanic', script: 'Hebrew', rtl: true, romanize: true },
 
   // Indo-European — Slavic
   { code: 'ru', name: 'Russian', nativeName: 'Русский', family: 'Indo-European', subfamily: 'Slavic', script: 'Cyrillic', rtl: false, romanize: true },
@@ -46,7 +46,7 @@ export const languages = [
   { code: 'pa', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Gurmukhi', rtl: false, romanize: true },
   { code: 'ur', name: 'Urdu', nativeName: 'اردو', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Arabic', rtl: true, romanize: true },
   { code: 'ps', name: 'Pashto', nativeName: 'پښتو', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Arabic', rtl: true, romanize: true },
-  { code: 'ku', name: 'Kurdish', nativeName: 'Kurdî', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Arabic', rtl: true, romanize: true },
+  { code: 'ku', name: 'Kurdish', nativeName: 'Kurdî', family: 'Indo-European', subfamily: 'Indo-Iranian', script: 'Latin', rtl: false, romanize: true },
 
   // Indo-European — Celtic
   { code: 'ga', name: 'Irish', nativeName: 'Gaeilge', family: 'Indo-European', subfamily: 'Celtic', script: 'Latin', rtl: false, romanize: false },
@@ -72,7 +72,7 @@ export const languages = [
 
   // Afroasiatic — Semitic
   { code: 'ar', name: 'Arabic', nativeName: 'العربية', family: 'Afroasiatic', subfamily: 'Semitic', script: 'Arabic', rtl: true, romanize: true },
-  { code: 'he', name: 'Hebrew', nativeName: 'עברית', family: 'Afroasiatic', subfamily: 'Semitic', script: 'Arabic', rtl: true, romanize: true },
+  { code: 'he', name: 'Hebrew', nativeName: 'עברית', family: 'Afroasiatic', subfamily: 'Semitic', script: 'Hebrew', rtl: true, romanize: true },
 
   // ═══════════════════════════════════════════════
   // Uralic
@@ -143,7 +143,7 @@ export const languages = [
   // ═══════════════════════════════════════════════
 
   // Austroasiatic — Vietic
-  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt', family: 'Austroasiatic', subfamily: 'Viatic', script: 'Latin', rtl: false, romanize: false },
+  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt', family: 'Austroasiatic', subfamily: 'Vietic', script: 'Latin', rtl: false, romanize: false },
 
   // Austroasiatic — Mon-Khmer
   { code: 'km', name: 'Khmer', nativeName: 'ខ្មែរ', family: 'Austroasiatic', subfamily: 'Mon-Khmer', script: 'Khmer', rtl: false, romanize: true },

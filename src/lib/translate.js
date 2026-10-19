@@ -4,6 +4,7 @@
 
 const CACHE_PREFIX = 'pollyglot:cache:'
 const CACHE_TTL = 24 * 60 * 60 * 1000 // 24 hours
+const MAX_CACHE_ENTRIES = 400
 const API_URL = 'https://api.mymemory.translated.net/get'
 
 // Map internal language codes to MyMemory-compatible codes where they differ
@@ -22,7 +23,12 @@ function getCacheKey(source, target, text) {
 
 function getCachedTranslation(source, target, text) {
   const key = getCacheKey(source, target, text)
-  const raw = localStorage.getItem(key)
+  let raw
+  try {
+    raw = localStorage.getItem(key)
+  } catch {
+    return null // storage blocked — treat as a cache miss
+  }
   if (!raw) return null
   try {
     const { value, timestamp } = JSON.parse(raw)
@@ -36,9 +42,36 @@ function getCachedTranslation(source, target, text) {
   }
 }
 
+// Drop the oldest cache entries when the store grows past the cap so a
+// long session can't fill localStorage unboundedly.
+function pruneCache() {
+  try {
+    const entries = []
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i)
+      if (!k || !k.startsWith(CACHE_PREFIX)) continue
+      let timestamp = 0
+      try {
+        timestamp = JSON.parse(localStorage.getItem(k))?.timestamp ?? 0
+      } catch {
+        // unreadable entry — still a prune candidate
+      }
+      entries.push([k, timestamp])
+    }
+    if (entries.length < MAX_CACHE_ENTRIES) return
+    entries.sort((a, b) => a[1] - b[1])
+    for (const [k] of entries.slice(0, entries.length - MAX_CACHE_ENTRIES + 1)) {
+      localStorage.removeItem(k)
+    }
+  } catch {
+    // storage blocked — nothing to prune
+  }
+}
+
 function setCachedTranslation(source, target, text, value) {
   const key = getCacheKey(source, target, text)
   try {
+    pruneCache()
     localStorage.setItem(key, JSON.stringify({ value, timestamp: Date.now() }))
   } catch {
     // localStorage might be full; silently ignore
@@ -64,7 +97,7 @@ export async function translateWord(source, target, text) {
   if (email) params.set('de', email)
 
   try {
-    const res = await fetch(`${API_URL}?${params}`)
+    const res = await fetch(`${API_URL}?${params}`, { signal: AbortSignal.timeout(15000) })
 
     if (!res.ok) {
       return { error: 'network_error', status: res.status }
@@ -114,6 +147,9 @@ export async function translateWord(source, target, text) {
 
     return { translated, cached: false }
   } catch (e) {
-    return { error: 'network_error', message: e.message }
+    return {
+      error: 'network_error',
+      message: e?.name === 'TimeoutError' ? 'request timed out' : e.message,
+    }
   }
 }

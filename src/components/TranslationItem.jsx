@@ -6,6 +6,7 @@ import { cn } from '../lib/utils'
 
 export default function TranslationItem({ lang, result, onRetry }) {
   const [copied, setCopied] = useState(false)
+  const [copyFailed, setCopyFailed] = useState(false)
   const [voiceAvailable, setVoiceAvailable] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
 
@@ -33,7 +34,8 @@ export default function TranslationItem({ lang, result, onRetry }) {
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
     } catch {
-      // ignore
+      setCopyFailed(true)
+      setTimeout(() => setCopyFailed(false), 2000)
     }
   }
 
@@ -44,11 +46,9 @@ export default function TranslationItem({ lang, result, onRetry }) {
       setIsSpeaking(false)
       return
     }
+    const utterance = speak(result.translated, lang.code, () => setIsSpeaking(false))
+    if (!utterance) return
     setIsSpeaking(true)
-    speak(result.translated, lang.code)
-    // Reset speaking state after a delay based on text length
-    const duration = Math.max(1500, result.translated.length * 120)
-    setTimeout(() => setIsSpeaking(false), duration)
   }
 
   // Loading skeleton
@@ -155,6 +155,11 @@ export default function TranslationItem({ lang, result, onRetry }) {
               <>
                 <Check className="w-3.5 h-3.5 text-green-600" />
                 Copied
+              </>
+            ) : copyFailed ? (
+              <>
+                <AlertCircle className="w-3.5 h-3.5 text-destructive" />
+                Couldn't copy
               </>
             ) : (
               <>

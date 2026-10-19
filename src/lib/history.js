@@ -7,7 +7,16 @@ export function getHistory() {
   try {
     const raw = localStorage.getItem(HISTORY_KEY)
     if (!raw) return []
-    return JSON.parse(raw)
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    // Drop entries that can't be rendered or re-run safely
+    return parsed.filter(
+      (e) =>
+        e &&
+        typeof e.text === 'string' &&
+        typeof e.sourceLang === 'string' &&
+        Array.isArray(e.families),
+    )
   } catch {
     return []
   }

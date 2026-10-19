@@ -39,7 +39,8 @@ export function useTranslation() {
 
     setResults(initialResults)
 
-    // Fetch translations concurrently (the proxy handles throttling)
+    // Fetch translations concurrently — the browser and MyMemory absorb
+    // the burst; results land progressively as each resolves.
     const promises = allLangs.map(async ({ familyName, lang }) => {
       const result = await translateWord(sourceLang, lang.code, text)
 
@@ -81,7 +82,11 @@ export function useTranslation() {
         }
       })
 
+      const reqId = requestIdRef.current
       const result = await translateWord(sourceLang, langCode, text)
+
+      // Ignore if a newer search has started since the retry began
+      if (reqId !== requestIdRef.current) return
 
       setResults((prev) => {
         if (!prev || !prev[familyName]) return prev

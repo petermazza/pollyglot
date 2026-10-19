@@ -64,7 +64,7 @@ Browser → MyMemory API (direct, CORS-enabled)
       localStorage cache (24h TTL)
 ```
 
-No backend proxy required. The app calls MyMemory directly from the browser. An optional Netlify Function is included for server-side caching in production.
+No backend proxy required. The app calls MyMemory directly from the browser. A Netlify Function (`netlify/functions/translate.js`) is deployed as a caching proxy, but the app does not route through it today.
 
 ## Language Families
 
