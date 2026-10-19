@@ -93,7 +93,7 @@ export async function translateWord(source, target, text) {
   })
 
   // Optional: add email for higher rate limit (50K chars/day vs 5K anonymous)
-  const email = import.meta.env.VITE_MYMEMORY_EMAIL
+  const email = import.meta.env?.VITE_MYMEMORY_EMAIL
   if (email) params.set('de', email)
 
   try {
