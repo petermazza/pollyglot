@@ -89,7 +89,7 @@ export default function App() {
             </div>
           </div>
           <a
-            href="https://github.com/petermazza/pollyglot"
+            href="https://mymemory.translated.net"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors hidden sm:block"
